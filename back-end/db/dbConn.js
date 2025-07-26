@@ -4,7 +4,7 @@ const conn = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  database: 'Qcodeigniter',
+  database: 'SISIII2025_89231387',
 })
 
 conn.connect((err) => {
@@ -38,12 +38,42 @@ dataPool.oneNovica = (id) => {
 
 dataPool.creteNovica = (title, slug, text) => {
   return new Promise((resolve, reject) => {
-    conn.query(`INSERT INTO news (title,slug,text) VALUES (?,?,?)`, [title, slug, text], (err, res) => {
+    conn.query(`INSERT INTO news_new (title,slug,text,author_email) VALUES (?,?,?,?)`, [title, slug, text, username], (err, res) => {
       if (err) { return reject(err) }
       return resolve(res)
     })
   })
 }
+//DELETE FROM news WHERE id = 42;
+dataPool.deleteNovica = (id) => {
+  return new Promise((resolve, reject) => {
+    conn.query(`DELETE FROM news WHERE id = ?`, id, (err, res) => {
+      if (err) { return reject(err) }
+      return resolve(res)
+    })
+  })
+}
+//SELECT title, published_date, author FROM NEWS
+
+dataPool.allUsers = () => {
+  return new Promise((resolve, reject) => {
+    conn.query(`SELECT * From Uporabnik `, (err, res) => {
+      if (err) { return reject(err) }
+      return resolve(res)
+    })
+  })
+}
+
+dataPool.findUser = () => {
+  return new Promise((resolve, reject) => {
+    conn.query(`SELECT user_name From users `, (err, res) => {
+      if (err) { return reject(err) }
+      return resolve(res)
+    })
+  })
+}
+
+
 
 dataPool.AuthUser = (username) => {
   return new Promise((resolve, reject) => {
@@ -54,6 +84,9 @@ dataPool.AuthUser = (username) => {
   })
 
 }
+
+
+
 
 module.exports = dataPool;
 
